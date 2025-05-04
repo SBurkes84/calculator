@@ -1,1 +1,166 @@
-# calculator
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="JavaScript Calculator">
+  <meta name="keywords" content="JavaScript, HTML, CSS">
+  <meta name="author" content="Shequila Sledge">
+  <title>JavaScript Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    .formcontainer {
+      background: #fff;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .formlabel {
+      font-weight: bold;
+      display: inline-block;
+      width: 100px;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-left: 5px;
+    }
+
+    input[type="text"] {
+      padding: 5px;
+      width: 150px;
+    }
+
+    input[type="button"] {
+      padding: 8px 16px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form id="myform" onsubmit="return false;">
+    <div class="formcontainer">
+      <h1>Calculator</h1>
+      <fieldset id="detail">
+        <legend>Calculator</legend>
+
+        <label class="formlabel" for="Operand1">Operand 1:</label>
+        <input type="text" id="Operand1" name="Operand1">
+        <label class="error" id="Operand1Error"></label>
+        <br><br>
+
+        <label class="formlabel">Operator:</label>
+        <label><input type="radio" name="Operator" id="AddOperator">Add</label>
+        <label><input type="radio" name="Operator" id="SubtractOperator">Subtract</label>
+        <label><input type="radio" name="Operator" id="MultiplyOperator">Multiply</label>
+        <label><input type="radio" name="Operator" id="DivideOperator">Divide</label>
+        <label class="error" id="OperatorError"></label>
+        <br><br>
+
+        <label class="formlabel" for="Operand2">Operand 2:</label>
+        <input type="text" id="Operand2" name="Operand2">
+        <label class="error" id="Operand2Error"></label>
+        <br><br>
+
+        <label class="formlabel">Result:</label>
+        <span id="Result"></span>
+        <br><br>
+
+        <input type="button" value="Calculate" onclick="calculate();">
+        <input type="button" value="Clear" onclick="clearform();">
+      </fieldset>
+    </div>
+  </form>
+
+  <script>
+    "use strict";
+
+    function calculate() {
+      document.getElementById("Operand1Error").innerHTML = "";
+      document.getElementById("Operand2Error").innerHTML = "";
+      document.getElementById("OperatorError").innerHTML = "";
+      document.getElementById("Result").innerHTML = "";
+
+      let errorflag = false;
+
+      let operand1 = document.getElementById("Operand1").value;
+      if (operand1 === "" || isNaN(operand1)) {
+        document.getElementById("Operand1Error").innerHTML = "Operand 1 is required and must be a number";
+        errorflag = true;
+      }
+
+      let operand2 = document.getElementById("Operand2").value;
+      if (operand2 === "" || isNaN(operand2)) {
+        document.getElementById("Operand2Error").innerHTML = "Operand 2 is required and must be a number";
+        errorflag = true;
+      }
+
+      if (errorflag) return;
+
+      let operand1fp = parseFloat(operand1);
+      let operand2fp = parseFloat(operand2);
+
+      let operator;
+      if (document.getElementById("AddOperator").checked) {
+        operator = "+";
+      } else if (document.getElementById("SubtractOperator").checked) {
+        operator = "-";
+      } else if (document.getElementById("MultiplyOperator").checked) {
+        operator = "*";
+      } else if (document.getElementById("DivideOperator").checked) {
+        operator = "/";
+      } else {
+        document.getElementById("OperatorError").innerHTML = "Operator is required";
+        return;
+      }
+
+      let result;
+      switch (operator) {
+        case "+":
+          result = operand1fp + operand2fp;
+          break;
+        case "-":
+          result = operand1fp - operand2fp;
+          break;
+        case "*":
+          result = operand1fp * operand2fp;
+          break;
+        case "/":
+          if (operand2fp === 0) {
+            document.getElementById("OperatorError").innerHTML = "Cannot divide by zero";
+            return;
+          }
+          result = operand1fp / operand2fp;
+          break;
+      }
+
+      document.getElementById("Result").innerHTML = result.toString();
+    }
+
+    function clearform() {
+      document.getElementById("Operand1").value = "";
+      document.getElementById("Operand2").value = "";
+      document.getElementById("Operand1Error").innerHTML = "";
+      document.getElementById("Operand2Error").innerHTML = "";
+      document.getElementById("OperatorError").innerHTML = "";
+      document.getElementById("Result").innerHTML = "";
+      document.getElementById("AddOperator").checked = false;
+      document.getElementById("SubtractOperator").checked = false;
+      document.getElementById("MultiplyOperator").checked = false;
+      document.getElementById("DivideOperator").checked = false;
+    }
+  </script>
+</body>
+</html>
